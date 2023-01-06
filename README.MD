@@ -1,6 +1,6 @@
 # Pre-requirements
-[Docker](https://www.docker.com/)
-[Kind](https://kind.sigs.k8s.io/)
+- [Docker](https://www.docker.com/)
+- [Kind](https://kind.sigs.k8s.io/)
 
 
 # Installation
