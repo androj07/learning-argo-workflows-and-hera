@@ -1,3 +1,8 @@
+# Pre-requirements
+[Docker](https://www.docker.com/)
+[Kind](https://kind.sigs.k8s.io/)
+
+
 # Installation
 
 ```shell
@@ -45,12 +50,3 @@ export ARGO_TOKEN="Bearer $(kubectl get secret argo-user.service-account-token -
 echo $ARGO_TOKEN
 ```
 
-
-## Dependencies
-```shell
-pip install hera-workflows
-```
-
-
-
-## Links
