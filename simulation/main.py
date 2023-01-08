@@ -24,6 +24,12 @@ if __name__ == '__main__':
         logger.info(f"Argument {i:>6}: {arg}")
 
     if sys.argv[1] == "--generator":
+        json.dump([{"value": i} for i in range(int(sys.argv[2]))], sys.stdout)
 
-        for i in range(int(sys.argv[2])):
-            json.dump({"value": i}, sys.stdout)
+    if sys.argv[1] == "--multiply":
+        multiplier = int(sys.argv[2])
+        value = int(sys.argv[3])
+        result = multiplier * value
+        logger.info(result)
+        with open("/tmp/value", "w") as f:
+            f.write(str(result))

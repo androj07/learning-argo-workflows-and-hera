@@ -59,5 +59,10 @@ kind load docker-image generator:local --name argo-learning
 
 # Run example
 ```shell
-python ./workflows/main.py
+# generate 10 tasks multiplying numbers by 2
+python ./workflows/main.py 10 2
 ```
+
+
+# Links :
+- [Hera Examples](https://github.com/argoproj-labs/hera-workflows/tree/main/examples)
