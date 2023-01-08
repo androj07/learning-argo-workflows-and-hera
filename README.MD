@@ -33,9 +33,9 @@ kubectl -n argo port-forward --address 0.0.0.0 svc/argo-server 2746:2746 > /dev/
 
 # Authentication
 ```shell
-kubectl create role argo-user --verb=list,update --resource=workflows.argoproj.io
+kubectl apply -f ./workflow-role.yaml
 kubectl create sa argo-user
-kubectl create rolebinding argo-user --role=argo-user --serviceaccount=argo:argo-user
+kubectl create rolebinding argo-user --role=argo-user --serviceaccount=default:argo-user
 kubectl apply -f - <<EOF
 apiVersion: v1
 kind: Secret
@@ -48,5 +48,16 @@ EOF
 unset ARGO_TOKEN
 export ARGO_TOKEN="Bearer $(kubectl get secret argo-user.service-account-token -o=jsonpath='{.data.token}' | base64 --decode)"
 echo $ARGO_TOKEN
-```
+```kubectl create rolebinding argo-user --role=argo-user --serviceaccount=default:argo-user
 
+
+# Building and loading custom image to kind
+```shell
+docker build -t generator:local .
+kind load docker-image generator:local --name argo-learning
+ ```
+
+# Run example
+```shell
+python ./workflows/main.py
+```
