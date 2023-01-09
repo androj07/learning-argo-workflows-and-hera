@@ -48,7 +48,7 @@ EOF
 unset ARGO_TOKEN
 export ARGO_TOKEN="Bearer $(kubectl get secret argo-user.service-account-token -o=jsonpath='{.data.token}' | base64 --decode)"
 echo $ARGO_TOKEN
-```kubectl create rolebinding argo-user --role=argo-user --serviceaccount=default:argo-user
+```
 
 
 # Building and loading custom image to kind
@@ -59,8 +59,8 @@ kind load docker-image generator:local --name argo-learning
 
 # Run example
 ```shell
-# generate 10 tasks multiplying numbers by 2
-python ./workflows/main.py 10 2
+# generate 1 workflow with 10 tasks multiplying numbers by 2
+python ./workflows/main.py 1 10 2
 ```
 
 

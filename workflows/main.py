@@ -1,8 +1,9 @@
 import os
 import sys
+import time
 import uuid
 
-from hera import Task, Workflow, set_global_host, set_global_token, Parameter, Suspend, ValueFrom
+from hera import Task, Workflow, set_global_host, set_global_token, Parameter, ValueFrom
 
 argo_token = os.getenv("ARGO_TOKEN")
 print(argo_token)
@@ -22,10 +23,7 @@ def fanin(values: list):
     print(f"Total: {sum}!")
 
 
-if __name__ == '__main__':
-    tasks_to_generate = int(sys.argv[1])
-    multiplier = int(sys.argv[2])
-
+def create_workflow(tasks: int, multiplier: int):
     with Workflow(name=f"dynamic-{uuid.uuid4()}", service_account_name="argo-user") as w:
         # this can be anything! e.g. fetch from some API, then in parallel process all entities; chunk database records
         # and process them in parallel, etc.
@@ -33,7 +31,7 @@ if __name__ == '__main__':
             "generate-tasks",
             image="generator:local",
             command=["python", "./main.py"],
-            args=["--generator", str(tasks_to_generate)],
+            args=["--generator", str(tasks)],
             # command=["echo", '[{"value": "a"}, {"value": "b"}, {"value": "c"}]'],
         )
         fanout_task = Task(
@@ -53,3 +51,13 @@ if __name__ == '__main__':
         generate_task >> fanout_task >> fanin_task
 
     w.create()
+    print("Generated workflow\n")
+
+
+if __name__ == '__main__':
+    number_of_workflows = int(sys.argv[1])
+    tasks_to_generate = int(sys.argv[2])
+    multiplier = int(sys.argv[3])
+    for i in range(number_of_workflows):
+        create_workflow(tasks_to_generate, multiplier)
+        time.sleep(1)
